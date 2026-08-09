@@ -1,0 +1,7 @@
+author_id = "demo"
+app_id = "go-imagebug"
+author_name = "Demo"
+app_name = "Image bug Demo (Go)"
+
+[files]
+img = { path = "image.png" }
