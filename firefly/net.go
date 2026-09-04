@@ -134,6 +134,43 @@ func GetPeers() Peers {
 	return Peers{getPeers()}
 }
 
+// Get a scanner of peers that are currently online, allowing iterating
+// over them without any allocations.
+//
+// Includes the local device.
+//
+// It can be used to detect if multiplayer is active:
+// if there is more than 1 peer, you're playing with friends.
+func ScanPeers() PeerScanner {
+	return PeerScanner{peers: GetPeers()}
+}
+
+// Scanner used to iterate a list of peers without any allocations.
+//
+// Can be obtained using [Peers.NewScanner].
+type PeerScanner struct {
+	peers  Peers
+	nextID uint8
+}
+
+// Find the next peer. Use [PeerScanner.Peer] to get the current value.
+func (s *PeerScanner) Scan() bool {
+	for s.nextID < 32 {
+		if s.peers.Contains(Peer{s.nextID}) {
+			s.nextID++
+			return true
+		}
+		s.nextID++
+	}
+	return false
+}
+
+// Current scanned peer. Calling this function before [PeerScanner.Scan]
+// is considered undefined behavior.
+func (s *PeerScanner) Peer() Peer {
+	return Peer{s.nextID - 1}
+}
+
 // Save the given [Stash].
 //
 // When called, the stash for the given peer will be stored in RAM.
