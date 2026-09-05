@@ -110,7 +110,7 @@ func (peers Peers) Iter() iter.Seq[Peer] {
 
 // Get a scanner of the peers, allowing iterating over them without any allocations.
 func (peers Peers) Scanner() PeerScanner {
-	return PeerScanner{peers: GetPeers()}
+	return PeerScanner{peers: peers}
 }
 
 // Check if the given [Peer] is online.
