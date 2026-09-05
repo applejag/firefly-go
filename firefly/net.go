@@ -108,13 +108,7 @@ func (peers Peers) Iter() iter.Seq[Peer] {
 	}
 }
 
-// Get a scanner of peers that are currently online, allowing iterating
-// over them without any allocations.
-//
-// Includes the local device.
-//
-// It can be used to detect if multiplayer is active:
-// if there is more than 1 peer, you're playing with friends.
+// Get a scanner of the peers, allowing iterating over them without any allocations.
 func (peers Peers) Scanner() PeerScanner {
 	return PeerScanner{peers: GetPeers()}
 }
